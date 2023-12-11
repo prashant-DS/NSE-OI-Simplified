@@ -1,0 +1,12 @@
+{
+  "name": "oi simplified chrome Extension",
+  "description": "get oi details and list max oi support and resistance",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": ["storage"],
+  "host_permissions": ["https://*/*", "http://*/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "/assets/oi.png"
+  }
+}
