@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OI</title>
+    <style>
+      /* Add your custom styles here */
+
+      body {
+        margin: 20px;
+        width: 400px;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 2px;
+      }
+
+      .section {
+        margin-top: 20px;
+        border-bottom: 2px solid rgb(137, 137, 137);
+      }
+
+      .table-container {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      .table-container th,
+      .table-container td {
+        border: 1px solid #c6c5c5;
+        padding: 8px;
+        text-align: center;
+      }
+
+      .header-row {
+        background-color: #f2f2f2;
+      }
+
+      .red-row {
+        background-color: #edd4d4;
+      }
+
+      .green-row {
+        background-color: #d4edda;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="section" id="bank">
+      <h2>BANK NIFTY</h2>
+      <table class="table-container" id="table1">
+        <thead>
+          <tr class="header-row">
+            <th>OI</th>
+            <th>Price</th>
+            <th>OI</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="red-row">
+            <td id="bankResOI"></td>
+            <td id="bankResPrice"></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td id="bankCurrentPrice"></td>
+            <td></td>
+          </tr>
+          <tr class="green-row">
+            <td></td>
+            <td id="bankSuppPrice"></td>
+            <td id="bankSuppOI"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section" id="nifty">
+      <h2>NIFTY 50</h2>
+      <table class="table-container" id="table2">
+        <thead>
+          <tr class="header-row">
+            <th>OI</th>
+            <th>Price</th>
+            <th>OI</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="red-row">
+            <td id="niftyResOI"></td>
+            <td id="niftyResPrice"></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td id="niftyCurrentPrice"></td>
+            <td></td>
+          </tr>
+          <tr class="green-row">
+            <td></td>
+            <td id="niftySuppPrice"></td>
+            <td id="niftySuppOI"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section" id="midcap">
+      <h2>MID CAP</h2>
+      <table class="table-container" id="table3">
+        <thead>
+          <tr class="header-row">
+            <th>OI</th>
+            <th>Price</th>
+            <th>OI</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="red-row">
+            <td id="midcapResOI"></td>
+            <td id="midcapResPrice"></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td id="midcapCurrentPrice"></td>
+            <td></td>
+          </tr>
+          <tr class="green-row">
+            <td></td>
+            <td id="midcapSuppPrice"></td>
+            <td id="midcapSuppOI"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
