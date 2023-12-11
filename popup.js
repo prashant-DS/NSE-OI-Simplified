@@ -1,7 +1,5 @@
 // popup.js
 document.addEventListener("DOMContentLoaded", function () {
-  const contentDiv = document.getElementById("content");
-
   // Check if the data is present in localStorage
   const myData = localStorage.getItem("yourDataKey");
 
@@ -13,8 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch("https://www.nseindia.com/api/option-chain-indices?symbol=BANKNIFTY")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.filtered.data);
-
         const {
           strikePriceMaxCE,
           strikePriceMaxPE,
@@ -34,7 +30,14 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
         // final
-        // contentDiv.textContent = `API Response: ${JSON.stringify(data)}`;
+        document.getElementById("bankResOI").textContent = maxCEOpenInterest;
+        document.getElementById("bankResPrice").textContent = strikePriceMaxCE;
+
+        document.getElementById("bankCurrentPrice").textContent =
+          data.records.index.last;
+
+        document.getElementById("bankSuppOI").textContent = maxPEOpenInterest;
+        document.getElementById("bankSuppPrice").textContent = strikePriceMaxPE;
       })
       .catch((error) => {
         console.error("Error fetching data from the API:", error);
