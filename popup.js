@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
         // final
-        contentDiv.textContent = `API Response: ${JSON.stringify(data)}`;
+        // contentDiv.textContent = `API Response: ${JSON.stringify(data)}`;
       })
       .catch((error) => {
         console.error("Error fetching data from the API:", error);
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   document
-    .getElementById("refreshButton")
+    .getElementById("refreshAllButton")
     .addEventListener("click", function () {
       chrome.runtime.reload();
     });
