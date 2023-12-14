@@ -24,10 +24,11 @@ function fetchForIndex(index, id) {
       if (!oiResRow) return;
 
       oiResRow.insertCell().textContent =
-        maxCEOpenInterest.CE.openInterest + " ⇧";
+        maxCEOpenInterest.CE.openInterest.toLocaleString() + " ⇧";
       oiResRow.insertCell().textContent =
-        maxCEOpenInterest.CE.totalTradedVolume;
-      oiResRow.insertCell().textContent = maxCEOpenInterest.strikePrice;
+        maxCEOpenInterest.CE.totalTradedVolume.toLocaleString();
+      oiResRow.insertCell().textContent =
+        maxCEOpenInterest.strikePrice.toLocaleString();
       oiResRow.insertCell().textContent = "";
       oiResRow.insertCell().textContent = "";
 
@@ -35,10 +36,12 @@ function fetchForIndex(index, id) {
       if (maxCETradedVolume.strikePrice !== maxCEOpenInterest.strikePrice) {
         const row = document.createElement("tr");
         row.classList.add("red-row");
-        row.insertCell().textContent = maxCETradedVolume.CE.openInterest;
         row.insertCell().textContent =
-          maxCETradedVolume.CE.totalTradedVolume + " ⇧";
-        row.insertCell().textContent = maxCETradedVolume.strikePrice;
+          maxCETradedVolume.CE.openInterest.toLocaleString();
+        row.insertCell().textContent =
+          maxCETradedVolume.CE.totalTradedVolume.toLocaleString() + " ⇧";
+        row.insertCell().textContent =
+          maxCETradedVolume.strikePrice.toLocaleString();
         row.insertCell().textContent = "";
         row.insertCell().textContent = "";
 
@@ -53,19 +56,21 @@ function fetchForIndex(index, id) {
         )[0].children[1].textContent += " ⇧";
       }
 
-      document.getElementById(id + "CurrentPrice").textContent =
+      document.getElementById(id + "CurrentPrice").textContent = (
         Math.round(data.records?.index?.last) ||
         Math.round(data.records?.underlyingValue) ||
-        "-";
+        "-"
+      ).toLocaleString();
 
       const oiSuppRow = document.getElementsByClassName(id + "-max-oi-supp")[0];
       oiSuppRow.insertCell().textContent = "";
       oiSuppRow.insertCell().textContent = "";
-      oiSuppRow.insertCell().textContent = maxPEOpenInterest.strikePrice;
       oiSuppRow.insertCell().textContent =
-        maxCEOpenInterest.PE.totalTradedVolume;
+        maxPEOpenInterest.strikePrice.toLocaleString();
       oiSuppRow.insertCell().textContent =
-        maxPEOpenInterest.PE.openInterest + " ⇧";
+        maxCEOpenInterest.PE.totalTradedVolume.toLocaleString();
+      oiSuppRow.insertCell().textContent =
+        maxPEOpenInterest.PE.openInterest.toLocaleString() + " ⇧";
 
       // checking for pe volume
       if (maxPETradedVolume.strikePrice !== maxPEOpenInterest.strikePrice) {
@@ -73,10 +78,12 @@ function fetchForIndex(index, id) {
         row.classList.add("green-row");
         row.insertCell().textContent = "";
         row.insertCell().textContent = "";
-        row.insertCell().textContent = maxPETradedVolume.strikePrice;
         row.insertCell().textContent =
-          maxPETradedVolume.CE.totalTradedVolume + " ⇧";
-        row.insertCell().textContent = maxPETradedVolume.CE.openInterest;
+          maxPETradedVolume.strikePrice.toLocaleString();
+        row.insertCell().textContent =
+          maxPETradedVolume.CE.totalTradedVolume.toLocaleString() + " ⇧";
+        row.insertCell().textContent =
+          maxPETradedVolume.CE.openInterest.toLocaleString();
 
         if (maxPETradedVolume.strikePrice < maxPEOpenInterest.strikePrice) {
           oiSuppRow.insertAdjacentElement("beforebegin", row);
@@ -91,8 +98,6 @@ function fetchForIndex(index, id) {
     })
     .catch((error) => {
       console.error("Error fetching data from the API:", error);
-      document.body.textContent =
-        "Error fetching data from the API   : :   " + error.message;
     });
 }
 
