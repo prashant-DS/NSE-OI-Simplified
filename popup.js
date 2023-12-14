@@ -14,22 +14,80 @@ function fetchForIndex(index, id) {
     .then((data) => {
       // console.log("🥳 ~ file: popup.js:14 ~ .then ~ data:", data);
       const {
-        strikePriceMaxCE,
-        strikePriceMaxPE,
         maxCEOpenInterest,
+        maxCETradedVolume,
         maxPEOpenInterest,
+        maxPETradedVolume,
       } = getMaxOE(data);
 
-      document.getElementById(id + "ResOI").textContent = maxCEOpenInterest;
-      document.getElementById(id + "ResPrice").textContent = strikePriceMaxCE;
+      const oiResRow = document.getElementsByClassName(id + "-max-oi-res")[0];
+      if (!oiResRow) return;
+
+      oiResRow.insertCell().textContent =
+        maxCEOpenInterest.CE.openInterest + " ⇧";
+      oiResRow.insertCell().textContent =
+        maxCEOpenInterest.CE.totalTradedVolume;
+      oiResRow.insertCell().textContent = maxCEOpenInterest.strikePrice;
+      oiResRow.insertCell().textContent = "";
+      oiResRow.insertCell().textContent = "";
+
+      // checking for ce volume
+      if (maxCETradedVolume.strikePrice !== maxCEOpenInterest.strikePrice) {
+        const row = document.createElement("tr");
+        row.classList.add("red-row");
+        row.insertCell().textContent = maxCETradedVolume.CE.openInterest;
+        row.insertCell().textContent =
+          maxCETradedVolume.CE.totalTradedVolume + " ⇧";
+        row.insertCell().textContent = maxCETradedVolume.strikePrice;
+        row.insertCell().textContent = "";
+        row.insertCell().textContent = "";
+
+        if (maxCETradedVolume.strikePrice > maxCEOpenInterest.strikePrice) {
+          oiResRow.insertAdjacentElement("beforebegin", row);
+        } else {
+          oiResRow.insertAdjacentElement("afterend", row);
+        }
+      } else {
+        document.getElementsByClassName(
+          id + "-max-oi-res"
+        )[0].children[1].textContent += " ⇧";
+      }
 
       document.getElementById(id + "CurrentPrice").textContent =
         Math.round(data.records?.index?.last) ||
         Math.round(data.records?.underlyingValue) ||
         "-";
 
-      document.getElementById(id + "SuppOI").textContent = maxPEOpenInterest;
-      document.getElementById(id + "SuppPrice").textContent = strikePriceMaxPE;
+      const oiSuppRow = document.getElementsByClassName(id + "-max-oi-supp")[0];
+      oiSuppRow.insertCell().textContent = "";
+      oiSuppRow.insertCell().textContent = "";
+      oiSuppRow.insertCell().textContent = maxPEOpenInterest.strikePrice;
+      oiSuppRow.insertCell().textContent =
+        maxCEOpenInterest.PE.totalTradedVolume;
+      oiSuppRow.insertCell().textContent =
+        maxPEOpenInterest.PE.openInterest + " ⇧";
+
+      // checking for pe volume
+      if (maxPETradedVolume.strikePrice !== maxPEOpenInterest.strikePrice) {
+        const row = document.createElement("tr");
+        row.classList.add("green-row");
+        row.insertCell().textContent = "";
+        row.insertCell().textContent = "";
+        row.insertCell().textContent = maxPETradedVolume.strikePrice;
+        row.insertCell().textContent =
+          maxPETradedVolume.CE.totalTradedVolume + " ⇧";
+        row.insertCell().textContent = maxPETradedVolume.CE.openInterest;
+
+        if (maxPETradedVolume.strikePrice < maxPEOpenInterest.strikePrice) {
+          oiSuppRow.insertAdjacentElement("beforebegin", row);
+        } else {
+          oiSuppRow.insertAdjacentElement("afterend", row);
+        }
+      } else {
+        document.getElementsByClassName(
+          id + "-max-oi-supp"
+        )[0].children[3].textContent += " ⇧";
+      }
     })
     .catch((error) => {
       console.error("Error fetching data from the API:", error);
@@ -39,28 +97,49 @@ function fetchForIndex(index, id) {
 }
 
 function getMaxOE(data) {
-  let maxCEOpenInterest = 0;
-  let maxPEOpenInterest = 0;
-  let strikePriceMaxCE = null;
-  let strikePriceMaxPE = null;
+  let maxCEOpenInterest = { CE: { openInterest: 0 } };
+  let maxPEOpenInterest = { PE: { openInterest: 0 } };
+  let maxCETradedVolume = { CE: { totalTradedVolume: 0 } };
+  let maxPETradedVolume = { PE: { totalTradedVolume: 0 } };
 
   data.filtered.data.forEach((option) => {
     // Check for max openInterest in CE
-    if (option.CE && option.CE.openInterest > maxCEOpenInterest) {
-      maxCEOpenInterest = option.CE.openInterest;
-      strikePriceMaxCE = option.CE.strikePrice;
+    if (
+      option.CE &&
+      option.CE.openInterest > maxCEOpenInterest.CE.openInterest
+    ) {
+      maxCEOpenInterest = { ...option };
+    }
+
+    // Check for max traded volume in CE
+    if (
+      option.CE &&
+      option.CE.totalTradedVolume > maxCETradedVolume.CE.totalTradedVolume
+    ) {
+      maxCETradedVolume = { ...option };
     }
 
     // Check for max openInterest in PE
-    if (option.PE && option.PE.openInterest > maxPEOpenInterest) {
-      maxPEOpenInterest = option.PE.openInterest;
-      strikePriceMaxPE = option.PE.strikePrice;
+    if (
+      option.PE &&
+      option.PE.openInterest > maxPEOpenInterest.PE.openInterest
+    ) {
+      maxPEOpenInterest = { ...option };
+    }
+
+    // Check for max traded volume inPCE
+    if (
+      option.PE &&
+      option.PE.totalTradedVolume > maxPETradedVolume.PE.totalTradedVolume
+    ) {
+      maxPETradedVolume = { ...option };
     }
   });
+
   return {
     maxCEOpenInterest,
+    maxCETradedVolume,
     maxPEOpenInterest,
-    strikePriceMaxCE,
-    strikePriceMaxPE,
+    maxPETradedVolume,
   };
 }
