@@ -98,6 +98,8 @@ function fetchForIndex(index, id) {
     })
     .catch((error) => {
       console.error("Error fetching data from the API:", error);
+      document.getElementById(id).textContent =
+        "Error fetching data from the API";
     });
 }
 
