@@ -12,7 +12,7 @@ function fetchForIndex(index, id) {
   fetch(`https://www.nseindia.com/api/option-chain-indices?symbol=${index}`)
     .then((response) => response.json())
     .then((data) => {
-      // console.log("🥳 ~ file: popup.js:14 ~ .then ~ data:", data);
+      console.log("🥳 ~ file: popup.js:14 ~ .then ~ data:", id, data);
       const {
         maxCEOpenInterest,
         maxCETradedVolume,
@@ -97,7 +97,7 @@ function fetchForIndex(index, id) {
       }
     })
     .catch((error) => {
-      console.error("Error fetching data from the API:", error);
+      console.error("Error fetching data from the API in :", id, error);
       document.getElementById(id).textContent =
         "Error fetching data from the API";
     });
